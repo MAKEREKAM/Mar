@@ -194,7 +194,7 @@ class Main : JavaPlugin() {
         val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, Component.text("강화된 청금석", NamedTextColor.DARK_BLUE))
         val kanghwaLapisRecipe = ShapedRecipe(NamespacedKey(this, "kanghwa_lapis"), kanghwaLapis)
         kanghwaLapisRecipe.shape(" A ", "ALA", " A ")
-        kanghwaLapisRecipe.setIngredient('A', Material.AMETHYST_SHARD)
+        kanghwaLapisRecipe.setIngredient('A', Material.GOLD_INGOT)
         kanghwaLapisRecipe.setIngredient('L', Material.LAPIS_LAZULI)
 
         val beacon = ItemStackGenerator.generate(Material.REINFORCED_DEEPSLATE, Component.text("신호기", NamedTextColor.YELLOW))
