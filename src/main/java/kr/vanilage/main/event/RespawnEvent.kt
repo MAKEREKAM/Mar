@@ -6,6 +6,7 @@ import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerRespawnEvent
+import java.util.Random
 
 class RespawnEvent : Listener {
     @EventHandler
@@ -20,12 +21,19 @@ class RespawnEvent : Listener {
                                 val x = k.split(" ")[0].toDouble()
                                 val y = k.split(" ")[1].toDouble()
                                 val z = k.split(" ")[2].toDouble()
-                                e.setRespawnLocation(Location(Bukkit.getWorld("world"), x + 0.5, y, z + 0.5))
+                                e.respawnLocation = Location(Bukkit.getWorld("world"), x + 0.5, y, z + 0.5)
+                                return
                             }
                         }
                     }
                 }
             }
         }
+
+        val rd = Random()
+        val x = rd.nextInt(-8000, 8001)
+        val z = rd.nextInt(-8000, 8001)
+        val y = Bukkit.getWorld("world")!!.getHighestBlockYAt(x, z)
+        e.respawnLocation = Location(Bukkit.getWorld("world"), x.toDouble() + 0.5, y.toDouble() + 1, z.toDouble() + 0.5)
     }
 }
