@@ -12,10 +12,7 @@ import kr.vanilage.main.kanghwa.KangHwaSkill
 import kr.vanilage.main.teleport.MenuOpen
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
-import org.bukkit.Bukkit
-import org.bukkit.Material
-import org.bukkit.NamespacedKey
-import org.bukkit.Particle
+import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.entity.Villager
 import org.bukkit.inventory.ShapedRecipe
@@ -79,6 +76,10 @@ class Main : JavaPlugin() {
                             this@Main.saveConfig()
                             Bukkit.broadcast(Component.text("$teamName 팀이 생성되었습니다.", NamedTextColor.GREEN))
                             player.playerListName(Component.text("${player.name} [$teamName]"))
+
+                            Bukkit.getOnlinePlayers().forEach {
+                                it.playSound(it.location, Sound.ITEM_TOTEM_USE, 100F, 1F)
+                            }
                         }
                     }
                 }
