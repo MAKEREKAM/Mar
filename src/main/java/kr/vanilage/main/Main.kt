@@ -5,6 +5,7 @@ import io.github.monun.kommand.kommand
 import kr.vanilage.main.event.JoinEvent
 import kr.vanilage.main.event.KillEvent
 import kr.vanilage.main.event.RespawnEvent
+import kr.vanilage.main.event.SpawnEvent
 import kr.vanilage.main.event.beacon.BreakBeacon
 import kr.vanilage.main.event.beacon.PlaceBeacon
 import kr.vanilage.main.kanghwa.KangHwa
@@ -15,6 +16,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.entity.Villager
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
@@ -22,6 +24,8 @@ import java.util.*
 
 
 class Main : JavaPlugin() {
+    val rd = Random()
+
     override fun onEnable() {
         this.saveDefaultConfig()
         instance = this
@@ -34,6 +38,7 @@ class Main : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(KangHwaSkill(), this)
         Bukkit.getPluginManager().registerEvents(RespawnEvent(), this)
         Bukkit.getPluginManager().registerEvents(MenuOpen(), this)
+        Bukkit.getPluginManager().registerEvents(SpawnEvent(), this)
 
         kommand {
             register("팀") {
@@ -165,6 +170,54 @@ class Main : JavaPlugin() {
                     player.sendMessage("§a세팅 완료.")
                 }
             }
+
+            register("qwergfdsa") {
+                requires { isOp }
+                then("name" to string()) {
+                    executes {
+                        val name : String by it
+                        val player = Bukkit.getPlayer(name)!!
+                        val random = rd.nextInt(1, 101)
+                        if (random <= 30) {
+                            player.inventory.addItem(ItemStack(Material.IRON_INGOT, 10))
+                            player.inventory.addItem(ItemStack(Material.GOLD_INGOT, 5))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND, 5))
+                        }
+                        else if (random <= 50) {
+                            val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, Component.text("강화된 청금석", NamedTextColor.DARK_BLUE))
+                            kanghwaLapis.amount = rd.nextInt(10, 16)
+                            player.inventory.addItem(kanghwaLapis)
+                        }
+                        else if (random <= 70) {
+                            player.inventory.addItem(ItemStack(Material.LODESTONE))
+                        }
+                        else if (random <= 80) {
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_HELMET))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_CHESTPLATE))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_LEGGINGS))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_BOOTS))
+                        }
+                        else if (random <= 90) {
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_SWORD))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_PICKAXE))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_SHOVEL))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_AXE))
+                            player.inventory.addItem(ItemStack(Material.DIAMOND_HOE))
+                        }
+                        else if (random <= 95) {
+                            player.inventory.addItem(ItemStack(Material.TRIDENT))
+                        }
+                        else if (random <= 98) {
+                            player.inventory.addItem(ItemStack(Material.NETHER_STAR))
+                        }
+                        else if (random <= 99) {
+                            player.inventory.addItem(ItemStack(Material.ELYTRA))
+                        }
+
+                        Bukkit.broadcast(Component.text("<$name>님이 추천해 주셨습니다.", NamedTextColor.GREEN))
+                    }
+                }
+            }
         }
 
         Bukkit.getScheduler().runTaskTimer(this, Runnable {
@@ -202,8 +255,13 @@ class Main : JavaPlugin() {
         val beaconRecipe = ShapelessRecipe(NamespacedKey(this, "beacon"), beacon)
         beaconRecipe.addIngredient(Material.BEACON)
 
+        val soulSandRecipe = ShapelessRecipe(NamespacedKey(this, "soul_sand"), ItemStack(Material.SOUL_SAND))
+        soulSandRecipe.addIngredient(Material.SAND)
+        soulSandRecipe.addIngredient(Material.COAL)
+
         Bukkit.addRecipe(kanghwaLapisRecipe)
         Bukkit.addRecipe(beaconRecipe)
+        Bukkit.addRecipe(soulSandRecipe)
     }
 
     companion object {
