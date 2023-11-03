@@ -232,6 +232,13 @@ class Main : JavaPlugin() {
                     }
                 }
             }
+
+            register("gamestart") {
+                requires { isConsole }
+                executes {
+                    this@Main.config.set("gamestart", "true")
+                }
+            }
         }
 
         Bukkit.getScheduler().runTaskTimer(this, Runnable {

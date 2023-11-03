@@ -51,6 +51,24 @@ class BreakBeacon : Listener {
 
                     Main.instance.config.set("team.$team", null)
                     Main.instance.saveConfig()
+
+                    var remainingTeam = 0
+                    var lastTeam = ""
+
+                    if (Main.instance.config.getConfigurationSection("team") != null) {
+                        Main.instance.config.getConfigurationSection("team")!!.getKeys(false).forEach {
+                            remainingTeam++
+                            lastTeam = it
+                        }
+                    }
+
+                    Bukkit.broadcast(Component.text("§c남아 있는 팀은 ${remainingTeam}팀입니다."))
+                    if (Main.instance.config.getString("gamestart") == "true") {
+                        if (remainingTeam <= 1) {
+                            Bukkit.broadcast(Component.text("§c게임이 종료됩니다."))
+                            Bukkit.broadcast(Component.text("§c마지막 남은 팀은 ${lastTeam} 팀입니다."))
+                        }
+                    }
                 }
             }
         }
