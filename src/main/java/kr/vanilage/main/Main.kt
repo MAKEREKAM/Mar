@@ -39,6 +39,7 @@ class Main : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(MenuOpen(), this)
         Bukkit.getPluginManager().registerEvents(SpawnEvent(), this)
         Bukkit.getPluginManager().registerEvents(ChatEvent(), this)
+        Bukkit.getPluginManager().registerEvents(EntityDamageEvent(), this)
 
         kommand {
             register("팀") {
