@@ -2,10 +2,7 @@ package kr.vanilage.main
 
 import io.github.monun.kommand.getValue
 import io.github.monun.kommand.kommand
-import kr.vanilage.main.event.JoinEvent
-import kr.vanilage.main.event.KillEvent
-import kr.vanilage.main.event.RespawnEvent
-import kr.vanilage.main.event.SpawnEvent
+import kr.vanilage.main.event.*
 import kr.vanilage.main.event.beacon.BreakBeacon
 import kr.vanilage.main.event.beacon.PlaceBeacon
 import kr.vanilage.main.kanghwa.KangHwa
@@ -21,6 +18,8 @@ import org.bukkit.inventory.ShapedRecipe
 import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class Main : JavaPlugin() {
@@ -39,6 +38,7 @@ class Main : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(RespawnEvent(), this)
         Bukkit.getPluginManager().registerEvents(MenuOpen(), this)
         Bukkit.getPluginManager().registerEvents(SpawnEvent(), this)
+        Bukkit.getPluginManager().registerEvents(ChatEvent(), this)
 
         kommand {
             register("팀") {
@@ -214,7 +214,21 @@ class Main : JavaPlugin() {
                             player.inventory.addItem(ItemStack(Material.ELYTRA))
                         }
 
-                        Bukkit.broadcast(Component.text("<$name>님이 추천해 주셨습니다.", NamedTextColor.GREEN))
+                        Bukkit.broadcast(Component.text("${name}님이 추천해 주셨습니다.", NamedTextColor.GREEN))
+                    }
+                }
+            }
+
+            register("teamchat") {
+                requires { isPlayer }
+                executes {
+                    if (teamChat.contains(player.uniqueId)) {
+                        teamChat.remove(player.uniqueId)
+                        player.sendMessage("§a팀 채팅이 꺼졌습니다.")
+                    }
+                    else {
+                        teamChat.add(player.uniqueId)
+                        player.sendMessage("§a팀 채팅이 켜졌습니다.")
                     }
                 }
             }
@@ -266,5 +280,6 @@ class Main : JavaPlugin() {
 
     companion object {
         lateinit var instance : JavaPlugin
+        val teamChat = ArrayList<UUID>()
     }
 }
