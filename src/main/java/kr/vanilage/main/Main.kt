@@ -40,6 +40,7 @@ class Main : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(SpawnEvent(), this)
         Bukkit.getPluginManager().registerEvents(ChatEvent(), this)
         Bukkit.getPluginManager().registerEvents(EntityDamageEvent(), this)
+        Bukkit.getPluginManager().registerEvents(BlockSpawnPVP(), this)
 
         kommand {
             register("팀") {
