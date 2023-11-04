@@ -55,17 +55,18 @@ class InventoryOpener {
             player.openFrame(frame)
         }
 
-        private fun tpBeacon(player : Player) {
+        fun tpBeacon(player : Player) {
             if (Main.instance.config.getConfigurationSection("team") != null) {
                 for (i in Main.instance.config.getConfigurationSection("team")!!.getKeys(false)) {
                     for (j in Main.instance.config.getConfigurationSection("team.$i.member")!!.getKeys(false)) {
                         if (j == player.uniqueId.toString()) {
                             for (k in Main.instance.config.getConfigurationSection("beacon")!!.getKeys(false)) {
                                 if (Main.instance.config.getString("beacon.$k.team").equals(i)) {
-                                    val x = k.split(" ")[0].toDouble() + 0.5
-                                    val y = k.split(" ")[1].toDouble() + 1.0
-                                    val z = k.split(" ")[2].toDouble() + 0.5
-                                    player.teleport(Location(Bukkit.getWorld("world"), x, y, z))
+                                    val x = k.split(" ")[0].toDouble()
+                                    val y = k.split(" ")[1].toDouble()
+                                    val z = k.split(" ")[2].toDouble()
+                                    player.teleport(Location(Bukkit.getWorld("world"), x + 0.5, y + 1.0, z + 0.5))
+                                    return
                                 }
                             }
                         }
@@ -74,12 +75,12 @@ class InventoryOpener {
             }
         }
 
-        private fun tpVillage(player : Player) {
+        fun tpVillage(player : Player) {
             val y = Bukkit.getWorld("world")!!.getHighestBlockYAt(0, 0)
             player.teleport(Location(Bukkit.getWorld("world"), 0.5, y.toDouble() + 1, 0.5))
         }
 
-        private fun tpTeleportPoint(player : Player, point : String) {
+        fun tpTeleportPoint(player : Player, point : String) {
             if (Main.instance.config.getString("tp${point}.${player.uniqueId.toString()}") != null) {
                 val point = Main.instance.config.getString("tp${point}.${player.uniqueId.toString()}")!!.split(" ")
                 val x = point[0].toDouble() + 0.5

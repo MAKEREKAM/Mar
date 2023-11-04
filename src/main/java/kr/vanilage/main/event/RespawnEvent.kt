@@ -21,7 +21,7 @@ class RespawnEvent : Listener {
                                 val x = k.split(" ")[0].toDouble()
                                 val y = k.split(" ")[1].toDouble()
                                 val z = k.split(" ")[2].toDouble()
-                                e.respawnLocation = Location(Bukkit.getWorld("world"), x + 0.5, y, z + 0.5)
+                                e.respawnLocation = Location(Bukkit.getWorld("world"), x + 0.5, y + 1.0, z + 0.5)
                                 return
                             }
                         }
