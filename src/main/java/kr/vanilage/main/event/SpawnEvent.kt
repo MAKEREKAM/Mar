@@ -14,7 +14,7 @@ class SpawnEvent : Listener {
     @EventHandler
     fun onSpawn(e : EntitySpawnEvent) {
         if (e.entity is Skeleton) {
-            if (rd.nextInt(13) == 0) {
+            if (rd.nextInt(37) == 0) {
                 (e.entity as Skeleton).equipment.helmet = ItemStack(Material.WITHER_SKELETON_SKULL)
                 (e.entity as Skeleton).maxHealth = 0.1
             }

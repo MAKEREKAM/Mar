@@ -23,51 +23,73 @@ class BreakBeacon : Listener {
                 val y = e.block.y
                 val z = e.block.z
                 if (beaconX == x && beaconY == y && beaconZ == z) {
-                    val team = Main.instance.config.getString("beacon.$it.team")
-                    Main.instance.config.set("beacon.$it", null)
-                    Main.instance.saveConfig()
+                    var hasTeam = false
 
-                    for (i in Main.instance.config.getConfigurationSection("beacon")!!.getKeys(false)) {
-                        if (Main.instance.config.getString("beacon.$i.team") == team) {
-                            for (j in Main.instance.config.getConfigurationSection("team.$team.member")!!.getKeys(false)) {
-                                if (Bukkit.getPlayer(UUID.fromString(j)) != null) {
-                                    Bukkit.getPlayer(UUID.fromString(j))!!.sendMessage("§c신호기가 파괴되었습니다.")
-                                    Bukkit.getPlayer(UUID.fromString(j))!!.playSound(Bukkit.getPlayer(UUID.fromString(j))!!.location, Sound.ITEM_GOAT_HORN_SOUND_2, 100F, 1F)
-                                }
+                    for (i in Main.instance.config.getConfigurationSection("team")!!.getKeys(false)) {
+                        for (j in Main.instance.config.getConfigurationSection("team.$i.member")!!.getKeys(false)) {
+                            if (j == e.player.uniqueId.toString()) {
+                                hasTeam = true
                             }
-                            return
                         }
                     }
 
-                    Bukkit.broadcast(Component.text("$team 팀이 멸망했습니다.", NamedTextColor.RED))
+                    if (hasTeam) {
+                        val team = Main.instance.config.getString("beacon.$it.team")
+                        Main.instance.config.set("beacon.$it", null)
+                        Main.instance.saveConfig()
 
-                    Bukkit.getOnlinePlayers().forEach {
-                        it.playSound(it.location, Sound.ENTITY_WOLF_HOWL, 100F, 1F)
-                    }
+                        for (i in Main.instance.config.getConfigurationSection("beacon")!!.getKeys(false)) {
+                            if (Main.instance.config.getString("beacon.$i.team") == team) {
+                                for (j in Main.instance.config.getConfigurationSection("team.$team.member")!!
+                                    .getKeys(false)) {
+                                    if (Bukkit.getPlayer(UUID.fromString(j)) != null) {
+                                        Bukkit.getPlayer(UUID.fromString(j))!!.sendMessage("§c신호기가 파괴되었습니다.")
+                                        Bukkit.getPlayer(UUID.fromString(j))!!.playSound(
+                                            Bukkit.getPlayer(UUID.fromString(j))!!.location,
+                                            Sound.ITEM_GOAT_HORN_SOUND_2,
+                                            100F,
+                                            1F
+                                        )
+                                    }
+                                }
+                                return
+                            }
+                        }
 
-                    for (i in Main.instance.config.getConfigurationSection("team.$team.member")!!.getKeys(false)) {
-                        Main.instance.config.set("final.$i", 0)
-                    }
+                        Bukkit.broadcast(Component.text("$team 팀이 멸망했습니다.", NamedTextColor.RED))
 
-                    Main.instance.config.set("team.$team", null)
-                    Main.instance.saveConfig()
+                        Bukkit.getOnlinePlayers().forEach {
+                            it.playSound(it.location, Sound.ENTITY_WOLF_HOWL, 100F, 1F)
+                        }
 
-                    var remainingTeam = 0
-                    var lastTeam = ""
+                        for (i in Main.instance.config.getConfigurationSection("team.$team.member")!!.getKeys(false)) {
+                            Main.instance.config.set("final.$i", 0)
+                        }
 
-                    if (Main.instance.config.getConfigurationSection("team") != null) {
-                        Main.instance.config.getConfigurationSection("team")!!.getKeys(false).forEach {
-                            remainingTeam++
-                            lastTeam = it
+                        Main.instance.config.set("team.$team", null)
+                        Main.instance.saveConfig()
+
+                        var remainingTeam = 0
+                        var lastTeam = ""
+
+                        if (Main.instance.config.getConfigurationSection("team") != null) {
+                            Main.instance.config.getConfigurationSection("team")!!.getKeys(false).forEach {
+                                remainingTeam++
+                                lastTeam = it
+                            }
+                        }
+
+                        Bukkit.broadcast(Component.text("§c남아 있는 팀은 ${remainingTeam}팀입니다."))
+                        if (Main.instance.config.getString("gamestart") == "true") {
+                            if (remainingTeam <= 1) {
+                                Bukkit.broadcast(Component.text("§c게임이 종료됩니다."))
+                                Bukkit.broadcast(Component.text("§c마지막 남은 팀은 ${lastTeam} 팀입니다."))
+                            }
                         }
                     }
 
-                    Bukkit.broadcast(Component.text("§c남아 있는 팀은 ${remainingTeam}팀입니다."))
-                    if (Main.instance.config.getString("gamestart") == "true") {
-                        if (remainingTeam <= 1) {
-                            Bukkit.broadcast(Component.text("§c게임이 종료됩니다."))
-                            Bukkit.broadcast(Component.text("§c마지막 남은 팀은 ${lastTeam} 팀입니다."))
-                        }
+                    else {
+                        e.player.sendMessage("§c팀이 없어 신호기를 부술 수 없습니다.")
                     }
                 }
             }

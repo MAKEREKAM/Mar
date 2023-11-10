@@ -239,6 +239,7 @@ class Main : JavaPlugin() {
                 requires { isConsole }
                 executes {
                     this@Main.config.set("gamestart", "true")
+                    this@Main.saveConfig()
                 }
             }
         }
