@@ -33,7 +33,7 @@ class KangHwa : Listener {
         val inv = e.inventory
         if (inv.getItem(10) == null || inv.getItem(16) == null) return
 
-        if (isKangHwaAble(inv.getItem(10)!!.type) && inv.getItem(16)!!.displayName().toString().contains(Component.text("강화된 청금석", NamedTextColor.DARK_BLUE).toString())) {
+        if (isKangHwaAble(inv.getItem(10)!!.type) && inv.getItem(16)!!.displayName().toString().contains("§1강화된 청금석")) {
             val item = inv.getItem(10)!!
             val itemLore = item.lore
             var level = 0

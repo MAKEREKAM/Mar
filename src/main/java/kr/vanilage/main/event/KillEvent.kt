@@ -27,11 +27,11 @@ class KillEvent : Listener {
         }
 
         if (damager != null && damager is Player) {
-            Main.instance.config.set("final.${e.player.uniqueId.toString()}", null)
             if (Main.instance.config.getConfigurationSection("team") != null) {
                 Main.instance.config.getConfigurationSection("team")!!.getKeys(false).forEach {
                     for (i in Main.instance.config.getConfigurationSection("team.$it.member")!!.getKeys(false)) {
                         if (i == damager.uniqueId.toString()) {
+                            Main.instance.config.set("final.${e.player.uniqueId.toString()}", null)
                             Main.instance.config.set("team.$it.member.${e.player.uniqueId.toString()}", 0)
                             return
                         }

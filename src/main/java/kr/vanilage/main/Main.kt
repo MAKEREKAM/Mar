@@ -8,6 +8,7 @@ import kr.vanilage.main.event.beacon.PlaceBeacon
 import kr.vanilage.main.kanghwa.KangHwa
 import kr.vanilage.main.kanghwa.KangHwaSkill
 import kr.vanilage.main.teleport.MenuOpen
+import kr.vanilage.main.teleport.TpBeacon
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import org.bukkit.*
@@ -41,6 +42,7 @@ class Main : JavaPlugin() {
         Bukkit.getPluginManager().registerEvents(ChatEvent(), this)
         Bukkit.getPluginManager().registerEvents(EntityDamageEvent(), this)
         Bukkit.getPluginManager().registerEvents(BlockSpawnPVP(), this)
+        Bukkit.getPluginManager().registerEvents(TpBeacon(), this)
 
         kommand {
             register("팀") {
@@ -173,6 +175,60 @@ class Main : JavaPlugin() {
                 }
             }
 
+            register("tp4") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp4.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
+            register("tp5") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp5.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
+            register("tp6") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp6.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
+            register("tp7") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp7.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
+            register("tp8") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp8.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
+            register("tp9") {
+                requires { isPlayer }
+                executes {
+                    this@Main.config.set("tp9.${player.uniqueId.toString()}", "${player.location.blockX} ${player.location.blockY} ${player.location.blockZ}")
+                    this@Main.saveConfig()
+                    player.sendMessage("§a세팅 완료.")
+                }
+            }
+
             register("qwergfdsa") {
                 requires { isOp }
                 then("name" to string()) {
@@ -186,7 +242,7 @@ class Main : JavaPlugin() {
                             player.inventory.addItem(ItemStack(Material.DIAMOND, 5))
                         }
                         else if (random <= 50) {
-                            val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, Component.text("강화된 청금석", NamedTextColor.DARK_BLUE))
+                            val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, "§1강화된 청금석")
                             kanghwaLapis.amount = rd.nextInt(10, 16)
                             player.inventory.addItem(kanghwaLapis)
                         }
@@ -269,13 +325,13 @@ class Main : JavaPlugin() {
             }
         }, 0, 1)
 
-        val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, Component.text("강화된 청금석", NamedTextColor.DARK_BLUE))
+        val kanghwaLapis = ItemStackGenerator.generate(Material.LAPIS_LAZULI, "§1강화된 청금석")
         val kanghwaLapisRecipe = ShapedRecipe(NamespacedKey(this, "kanghwa_lapis"), kanghwaLapis)
         kanghwaLapisRecipe.shape(" A ", "ALA", " A ")
         kanghwaLapisRecipe.setIngredient('A', Material.GOLD_INGOT)
         kanghwaLapisRecipe.setIngredient('L', Material.LAPIS_LAZULI)
 
-        val beacon = ItemStackGenerator.generate(Material.REINFORCED_DEEPSLATE, Component.text("신호기", NamedTextColor.YELLOW))
+        val beacon = ItemStackGenerator.generate(Material.REINFORCED_DEEPSLATE, "§e신호기")
         val beaconRecipe = ShapelessRecipe(NamespacedKey(this, "beacon"), beacon)
         beaconRecipe.addIngredient(Material.BEACON)
 
