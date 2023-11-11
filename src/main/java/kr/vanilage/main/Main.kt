@@ -125,6 +125,10 @@ class Main : JavaPlugin() {
                                 return@executes
                             }
 
+                            if (this@Main.config.getConfigurationSection("team.$teamName.member")!!.getKeys(false).size >= 3) {
+                                player.sendMessage("§c팀의 인원이 3명 이상이기 때문에 팀에 가입할 수 없습니다.")
+                            }
+
                             this@Main.config.set("team.$teamName.member.${player.uniqueId.toString()}", 0)
                             this@Main.saveConfig()
                             player.playerListName(Component.text("${player.name} [$teamName]"))
